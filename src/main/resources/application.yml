@@ -1,0 +1,114 @@
+server:
+  port: 8082
+
+spring:
+  profiles:
+    active: @spring.profiles.active@
+  output:
+    ansi:
+      enabled: always
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: cc.creamcookie.jpa.NamingStrategy
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  error:
+    whitelabel:
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
+
+pebble:
+  suffix: .html
+  cache: false
+  exposeSessionAttributes: true
+  exposeRequestAttributes: true
+  split-view: false
+  ie9-barricade: shared/barricade
+
+app:
+  name: symverse-web
+  languages:
+    - i18n/default
+  support_languages:
+    - en_US
+
+---
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:mysql://[server_ip]:[server_port]/[dbname]?autoReconnection=true&autoReconnectForPools=true&useSSL=false
+    username:
+    password:
+  jpa:
+    show-sql: true
+      database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: GMT+9
+        globally_quoted_identifiers: true
+        format_sql: false
+
+logging:
+  level:
+    ccsframe4jpackage: debug
+    org.springframework.security.web: info
+    org.hibernate.type.descriptor.sql: info
+
+---
+
+spring:
+  profiles: dev
+    datasource:
+      url: jdbc:mysql://[server_ip]:[server_port]/[dbname]?autoReconnection=true&autoReconnectForPools=true&useSSL=false
+      username:
+      password:
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: GMT+9
+        globally_quoted_identifiers: true
+        format_sql: false
+
+logging:
+  level:
+    com.symverse: debug
+    org.springframework.security.web: info
+    org.hibernate.type.descriptor.sql: trace
+
+---
+
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://localhost/[dbname]?autoReconnection=true&autoReconnectForPools=true&useSSL=false
+    username:
+    password:
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: GMT+9
+        globally_quoted_identifiers: true
+        format_sql: false
+
+logging:
+  level:
+    com.symverse: debug
+    org.springframework.security.web: info
+    org.hibernate.type.descriptor.sql: trace
